@@ -1,0 +1,86 @@
+.mainHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 8rem;
+}
+
+.mainCards {
+  margin-top: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.card {
+  background: linear-gradient(#ff796f, #bd261b);
+  padding: var(--card-padding);
+  border-radius: var(--radius-3);
+  height: 15rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 2rem 3rem var(--color-danger-light);
+  transition: ease-in-out 0.2s;
+  cursor: pointer;
+  gap: 1em;
+}
+
+.card * {
+  color: white;
+}
+
+.card:nth-child(2) {
+  background: linear-gradient(#7f8191, #27282f);
+  box-shadow: 0 2rem 3rem rgba(0, 0, 0, 0.12);
+}
+
+.card:nth-child(3) {
+  background: linear-gradient(#6978fd, #4f15b4);
+  box-shadow: 0 2rem 3rem var(--color-primary-light);
+}
+
+.card:hover {
+  box-shadow: none;
+  transform: translateY(-4px);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cardBody {
+}
+
+.cardFooter {
+  margin-top: 1em;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.footerRight {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 0.3rem;
+  padding: 0.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.sparklineWrapper {
+  width: 100px;
+  height: 40px;
+}
+
+.footerRight h6 {
+  font-size: 0.7rem;
+  margin-bottom: 0.2rem;
+}
+
+.footerRight h5 {
+  font-size: 0.7rem;
+}
