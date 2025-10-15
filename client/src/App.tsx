@@ -1,10 +1,10 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
 import { lazy, Suspense } from "react";
+import WalletPage from "./pages/WalletPage";
 
 const HomePage = lazy(() => import("./pages/HomePage"));
-const DashboardPage = lazy(() => import("./pages/DashboardPage"));
-const MarketPlacePage = lazy(() => import("./pages/MarketPlacePage"));
+const MarketPlacePage = lazy(() => import("./pages/WalletPage"));
 
 function App() {
   const router = createBrowserRouter([
@@ -14,8 +14,7 @@ function App() {
       //errorElement: <ErrorPage>
       children: [
         { index: true, element: <HomePage /> },
-        { path: "/dashboard", element: <DashboardPage /> },
-        { path: "marketplace", element: <MarketPlacePage /> },
+        { path: "wallet", element: <WalletPage /> },
       ],
     },
   ]);
