@@ -1,7 +1,9 @@
+import Wallet from "../components/Wallet/Wallet";
+
 export default function WalletPage() {
   return (
     <>
-      <h1>WalletPage</h1>
+      <Wallet />
     </>
   );
 }
