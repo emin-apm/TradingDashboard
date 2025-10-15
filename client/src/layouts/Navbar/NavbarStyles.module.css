@@ -1,0 +1,112 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  background: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 4rem;
+  z-index: 10;
+}
+
+.navContainer {
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navProfileWrapper img {
+  width: 50px;
+  height: 50px;
+}
+
+.navLogo img {
+  width: 50px;
+  height: 50px;
+}
+
+.navProfileWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2em;
+}
+
+.navProfile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.navMenuBtn {
+  font-size: 1.3rem;
+}
+
+.navMenuBtn {
+  display: none;
+}
+
+.navSearch {
+  background: var(--color-light);
+  border-radius: var(--radius-1);
+  padding: 0.5rem 1rem;
+  width: 40rem;
+  gap: 1rem;
+  display: flex;
+  align-items: center;
+  color: var(--color-gray-light);
+}
+
+.navSearch input {
+  color: var(--color-dark);
+  width: 100%;
+}
+
+.navContainer i {
+  font-size: 1.3rem;
+}
+
+/* SIDENAVBAR */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 240px !important;
+  margin-top: 5rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  width: 50vh;
+}
+.sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.2rem 1.6rem;
+  background: transparent;
+  border-radius: 0 0.5rem 0.5rem 0;
+  color: var(--color-gray-dark);
+  width: 100%;
+}
+.sidebar h5 {
+  color: var(--color-gray-dark);
+  font-weight: 500;
+}
+.sidebar i {
+  font-size: 1.4rem;
+}
+
+.sidebar a:hover {
+  background: var(--color-white);
+  border-left: 0.3rem solid var(--color-primary);
+  color: var(--color-primary);
+  transition: ease-in-out 0.1s;
+}
+.sidebar a:hover h5 {
+  color: var(--color-primary);
+}
