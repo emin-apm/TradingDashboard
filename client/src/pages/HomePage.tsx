@@ -1,7 +1,9 @@
+import MarketOverview from "../components/MarketOvverview/MarketOverview";
+
 export default function HomePage() {
   return (
     <>
-      <h1>Home page</h1>
+      <MarketOverview />
     </>
   );
 }
