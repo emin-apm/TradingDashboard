@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
 import { lazy, Suspense } from "react";
 import WalletPage from "./pages/WalletPage";
-import MarketOverview from "./components/MarketOvverview/MarketOverview";
+import MarketOverview from "./components/MarketOverview/MarketOverview.tsx";
 
 const HomePage = lazy(() => import("./pages/HomePage"));
 const MarketPlacePage = lazy(() => import("./pages/WalletPage"));
