@@ -88,7 +88,10 @@ export default function MarketDetailModal({
     close,
   }));
   return (
-    <div className={styles.modalOverlay}>
+    <div
+      className={styles.modalOverlay}
+      onClick={(e) => e.target === e.currentTarget && onClose()}
+    >
       <div className={styles.modalContainer}>
         {/* Modal Header */}
         <div className={styles.modalHeader}>

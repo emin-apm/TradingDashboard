@@ -2,8 +2,12 @@ import { NavLink } from "react-router-dom";
 
 import styles from "./NavbarStyles.module.css";
 import SideNavbar from "./SideNavbar";
+import Login from "../../components/Login/Login";
+import { useState } from "react";
 
 export default function Navbar() {
+  const [showLoginModal, setLoginModal] = useState(false);
+
   return (
     <>
       <div className={styles.navbar}>
@@ -19,7 +23,10 @@ export default function Navbar() {
             <button className={styles.navThemeBtn}>
               <i className="fa-solid fa-moon"></i>
             </button>
-            <div className={styles.navProfile}>
+            <div
+              className={styles.navProfile}
+              onClick={() => setLoginModal((x) => (x = true))}
+            >
               <div className={styles.navProfilePhhoto}>
                 <img
                   src="https://img.freepik.com/premium-vector/user-profile-icon-circle_1256048-12499.jpg?semt=ais_hybrid&w=740&q=80"
@@ -35,6 +42,7 @@ export default function Navbar() {
         </div>
       </div>
       <SideNavbar />
+      {showLoginModal && <Login onClose={() => setLoginModal(false)} />}
     </>
   );
 }

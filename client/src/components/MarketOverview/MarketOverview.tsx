@@ -1,55 +1,31 @@
 import { useState } from "react";
-import MarketDetailModal from "./MarketDetailsModal";
+import MarketDetailModal from "../MarketTable/MarketDetailsModal";
 import styles from "./MarketStyles.module.css";
-import MarketTable from "./MarketTable";
-import Sparkline from "./SparkLine";
 
 type MarketData = {
   symbol: string;
-  lastPrice: string;
-  priceChangePercent: string;
-  volume: string;
+  price: number;
+  change24h: number;
+  volume: number;
   sparkline: number[];
 };
 
-export default function MarketOverview() {
+type MarketOverviewProps = {
+  favorites: MarketData[];
+  onRemoveFavorite: (symbol: string) => void;
+};
+
+export default function MarketOverview({
+  favorites = [],
+  onRemoveFavorite,
+}: MarketOverviewProps) {
   const [selectedSymbol, setSelectedSymbol] = useState<string | null>(null);
 
-  const dummyData: MarketData[] = [
-    {
-      symbol: "BTCUSDT",
-      lastPrice: "68250.45",
-      priceChangePercent: "1.25",
-      volume: "14521.30",
-      sparkline: [67000, 67400, 67850, 68100, 68200, 68250],
-    },
-    {
-      symbol: "ETHUSDT",
-      lastPrice: "2309.10",
-      priceChangePercent: "-0.85",
-      volume: "10234.10",
-      sparkline: [2350, 2340, 2330, 2320, 2310, 2309],
-    },
-    {
-      symbol: "SOLUSDT",
-      lastPrice: "156.30",
-      priceChangePercent: "3.21",
-      volume: "5120.75",
-      sparkline: [150, 152, 154, 156, 157, 156],
-    },
-  ];
-
-  const handleCardClick = (symbol: string) => {
-    setSelectedSymbol(symbol);
-  };
-
-  const handleCloseModal = () => {
-    setSelectedSymbol(null);
-  };
+  const handleCardClick = (symbol: string) => setSelectedSymbol(symbol);
+  const handleCloseModal = () => setSelectedSymbol(null);
 
   return (
     <div className="container">
-      {/* Show modal only when a symbol is selected */}
       {selectedSymbol && (
         <MarketDetailModal symbol={selectedSymbol} onClose={handleCloseModal} />
       )}
@@ -59,8 +35,8 @@ export default function MarketOverview() {
       </div>
 
       <section className={styles.mainCards}>
-        {dummyData.map((coin) => {
-          const isPositive = parseFloat(coin.priceChangePercent) > 0;
+        {favorites.map((coin) => {
+          const isPositive = coin.change24h >= 0;
           return (
             <article
               key={coin.symbol}
@@ -75,34 +51,35 @@ export default function MarketOverview() {
                   className={styles.headerRight}
                   style={{ color: isPositive ? "lime" : "red" }}
                 >
-                  {coin.priceChangePercent}%
+                  {coin.change24h.toFixed(2)}%
                 </div>
               </div>
 
               <div className={styles.cardBody}>
-                <h1>${coin.lastPrice}</h1>
+                <h1>${coin.price.toFixed(2)}</h1>
               </div>
 
               <div className={styles.cardFooter}>
                 <div className={styles.footerLeft}>
                   <h6 className="small">Volume</h6>
-                  <h5>{coin.volume}</h5>
+                  <h5>{coin.volume.toLocaleString()}</h5>
                 </div>
 
                 <div className={styles.footerRight}>
-                  <h6 className="small">Sparkline</h6>
-                  <div className={styles.sparklineWrapper}>
-                    <Sparkline data={coin.sparkline} positive={isPositive} />
-                  </div>
+                  <button
+                    className={styles.btnOutline}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onRemoveFavorite(coin.symbol);
+                    }}
+                  >
+                    Remove
+                  </button>
                 </div>
               </div>
             </article>
           );
         })}
-      </section>
-
-      <section>
-        <MarketTable />
       </section>
     </div>
   );
