@@ -1,0 +1,154 @@
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 50;
+}
+
+.modalContainer {
+  background-color: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 43rem;
+  max-height: 70vh;
+  min-height: 450px;
+  overflow: auto;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Modal Header */
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.modalTitle {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.closeButton {
+  font-size: 1.25rem;
+  color: #6b7280;
+  cursor: pointer;
+  background: none;
+  border: none;
+  transition: color 0.2s;
+}
+.closeButton:hover {
+  color: #000;
+}
+
+/* Chart */
+.chartContainer {
+  background-color: #f3f4f6;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+  height: 100px;
+  border: 1px solid #e5e7eb;
+}
+
+/* Grid Layout */
+.grid3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+/* Shared List Styles */
+.listContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.listHeaderTitle {
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.listHeader {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+  align-items: center;
+  font-weight: 600;
+  font-size: 0.875rem;
+  gap: 0.5rem;
+  padding: 0 0.5rem;
+}
+
+.list {
+  max-height: 200px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.listRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+  align-items: center;
+  font-size: 0.75rem;
+  border-radius: 0.25rem;
+}
+
+/* Colors */
+.textGreen {
+  color: #16a34a;
+}
+.textRed {
+  color: #dc2626;
+}
+
+/* Trade container spans 2 columns */
+.tradeContainer {
+  grid-column: span 2;
+}
+
+.btnOutline {
+  padding: 0 2rem;
+  border-radius: 8px;
+  background-color: transparent;
+  color: #007bff;
+  font-weight: 500;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-left: 0.9em;
+  margin-bottom: 1em;
+}
+
+.btnContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.buy {
+  border: 1px solid green;
+  color: green;
+}
+
+.buy:hover {
+  background-color: green;
+  color: #fff;
+}
+
+.sell {
+  border: 1px solid red;
+  color: red;
+}
+
+.sell:hover {
+  background-color: red;
+  color: #fff;
+}
