@@ -1,4 +1,4 @@
-import MarketOverview from "../components/MarketOvverview/MarketOverview";
+import MarketOverview from "../components/MarketOverview/MarketOverview";
 
 export default function HomePage() {
   return (
