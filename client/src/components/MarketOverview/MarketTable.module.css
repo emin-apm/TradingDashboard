@@ -1,0 +1,208 @@
+/* MarketTable.module.css */
+
+.market {
+  width: 100%;
+  padding: 2rem 2rem;
+  margin-top: 4em;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+}
+
+.titleWrapper {
+  margin-bottom: 2rem;
+}
+
+.sectionTitle {
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #222;
+}
+
+.marketTab {
+  width: 100%;
+}
+
+.tabNav {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  list-style: none;
+  padding: 0;
+}
+
+.tabBtn {
+  padding: 0.6rem 1.2rem;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+.tabBtn:hover,
+.tabBtn.active {
+  background-color: #007bff;
+  color: #fff;
+  border-color: #007bff;
+}
+
+.marketTable {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+}
+
+.tableHead {
+  background-color: #f1f3f5;
+}
+
+.tableRow {
+  border-bottom: 1px solid #eee;
+  transition: ease-in-out 0.4s;
+}
+.tableRow th {
+  text-align: left;
+}
+.tableRow:hover {
+  background-color: #f9f9f9;
+  transition: ease-in-out 0.4s;
+}
+
+.tableTitle {
+  font-weight: bold;
+}
+
+.tableHeader {
+  padding: 1rem 1.2rem;
+  text-align: left;
+  font-size: 1rem;
+  color: #555;
+}
+
+.tableData {
+  padding: 0.85rem 1.2rem;
+  font-size: 0.95rem;
+  color: #333;
+  vertical-align: middle;
+}
+
+.talbeData {
+  text-align: center;
+}
+
+.rank {
+  font-weight: bold;
+  text-align: center;
+}
+
+.addToFav {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #ccc;
+  font-size: 1.2rem;
+  transition: color 0.2s ease;
+  padding-left: 0.3em;
+}
+
+.addToFav:hover {
+  color: gold;
+}
+
+.wrapper {
+  width: 32px;
+  height: 32px;
+  background-color: #ddd;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 0.5rem;
+}
+
+.coinName {
+  display: inline-block;
+  font-weight: 600;
+}
+
+.coinName span {
+  font-weight: 400;
+  color: #888;
+  margin-left: 0.4rem;
+}
+
+.lastPrice {
+  font-weight: 500;
+}
+
+.lastUpdate {
+  font-weight: 500;
+}
+
+.green {
+  color: #28a745;
+}
+
+.red {
+  color: #dc3545;
+}
+
+.marketCap {
+  font-weight: 500;
+}
+
+.btnOutline {
+  padding: 0.2rem 0.85rem;
+  border: 1px solid #007bff;
+  border-radius: 8px;
+  background-color: transparent;
+  color: #007bff;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-left: 0.9em;
+}
+
+.btnOutline:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .tableHeader,
+  .tableData {
+    font-size: 0.9rem;
+    padding: 0.65rem 0.9rem;
+  }
+
+  .tabNav {
+    gap: 0.5rem;
+  }
+
+  .tabBtn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .tableHeader,
+  .tableData {
+    font-size: 0.85rem;
+    padding: 0.5rem 0.7rem;
+  }
+
+  .tabBtn {
+    padding: 0.35rem 0.6rem;
+    font-size: 0.85rem;
+  }
+
+  .market {
+    padding: 1rem 1rem;
+  }
+}
