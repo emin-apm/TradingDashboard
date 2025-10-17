@@ -17,14 +17,6 @@ export default function SideNavbar() {
           <i className="fa-solid fa-wallet"></i>
           <h5>My Wallet</h5>
         </Link>
-        <Link to={"/wallet"}>
-          <i className="fa-solid fa-wallet"></i>
-          <h5>My Wallet</h5>
-        </Link>
-        <Link to={"/wallet"}>
-          <i className="fa-solid fa-wallet"></i>
-          <h5>My Wallet</h5>
-        </Link>
       </div>
     </>
   );
