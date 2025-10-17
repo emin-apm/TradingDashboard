@@ -1,61 +1,35 @@
+// HomePage.tsx
 import { useEffect, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import MarketOverview from "../components/MarketOverview/MarketOverview";
 import MarketTable from "../components/MarketTable/MarketTable";
-
-type MarketData = {
-  symbol: string;
-  price: number;
-  change24h: number;
-  volume: number;
-  sparkline: number[];
-};
-
-type BinanceTicker = {
-  symbol: string;
-  lastPrice: string;
-  priceChangePercent: string;
-  quoteVolume: string;
-};
+import { fetchMarkets } from "../services/marketService";
+import type { MarketData } from "../services/marketService";
+import Spinner from "../components/Spinner/Spinner";
 
 export default function HomePage() {
-  const [markets, setMarkets] = useState<MarketData[]>([]);
+  const queryClient = useQueryClient();
   const [favorites, setFavorites] = useState<MarketData[]>([]);
+  const url = "https://api.binance.com/api/v3/ticker/24hr";
 
-  // Fetch initial data
+  // Fetch markets with React Query
+  const {
+    data: markets = [],
+    isLoading,
+    error,
+  } = useQuery<MarketData[]>({
+    queryKey: ["markets"],
+    queryFn: () => fetchMarkets(url),
+    refetchInterval: 60000, // optional auto refetch
+  });
+
+  // Initialize BTC as favorite when markets load
   useEffect(() => {
-    const fetchMarkets = async () => {
-      try {
-        const res = await fetch("https://api.binance.com/api/v3/ticker/24hr");
-        const data = await res.json();
+    const btc = markets.find((c) => c.symbol === "BTCUSDT");
+    if (btc) setFavorites([btc]);
+  }, [markets]);
 
-        const top = data
-          .filter((d: BinanceTicker) => d.symbol.endsWith("USDT"))
-          .sort(
-            (a: BinanceTicker, b: BinanceTicker) =>
-              parseFloat(b.quoteVolume) - parseFloat(a.quoteVolume)
-          )
-          .slice(0, 100);
-
-        const formatted = top.map((d: BinanceTicker) => ({
-          symbol: d.symbol,
-          price: parseFloat(d.lastPrice),
-          change24h: parseFloat(d.priceChangePercent),
-          volume: parseFloat(d.quoteVolume),
-          sparkline: Array(10).fill(parseFloat(d.lastPrice)),
-        }));
-
-        setMarkets(formatted);
-        const btc = formatted.find((c: MarketData) => c.symbol === "BTCUSDT");
-        if (btc) setFavorites([btc]);
-      } catch (err) {
-        console.error("Failed to fetch market data:", err);
-      }
-    };
-
-    fetchMarkets();
-  }, []);
-
-  // Live updates via WebSocket
+  // WebSocket for live updates
   useEffect(() => {
     if (markets.length === 0) return;
 
@@ -66,8 +40,10 @@ export default function HomePage() {
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
 
-      setMarkets((prevMarkets) => {
-        const updatedMarkets = prevMarkets.map((m) => {
+      queryClient.setQueryData<MarketData[]>(["markets"], (oldMarkets) => {
+        if (!oldMarkets) return [];
+
+        return oldMarkets.map((m) => {
           const update = data.find((d: any) => d.s === m.symbol);
           if (!update) return m;
 
@@ -77,7 +53,7 @@ export default function HomePage() {
             openPrice !== 0 ? ((newPrice - openPrice) / openPrice) * 100 : 0;
 
           const newSparkline = [...m.sparkline, newPrice];
-          if (newSparkline.length > 10) newSparkline.shift();
+          if (newSparkline.length > 20) newSparkline.shift();
 
           return {
             ...m,
@@ -87,22 +63,21 @@ export default function HomePage() {
             sparkline: newSparkline,
           };
         });
-
-        // Update favorites with new market data
-        setFavorites((prevFavs) =>
-          prevFavs.map((f) => {
-            const updated = updatedMarkets.find((m) => m.symbol === f.symbol);
-            return updated ? updated : f;
-          })
-        );
-
-        return updatedMarkets;
       });
+
+      // Update favorites
+      setFavorites((prevFavs) =>
+        prevFavs.map((f) => {
+          const updated = markets.find((m) => m.symbol === f.symbol);
+          return updated ? updated : f;
+        })
+      );
     };
 
     return () => ws.close();
-  }, [markets.length]);
+  }, [markets, queryClient]);
 
+  // Toggle favorite
   const toggleFavorite = (symbol: string) => {
     if (!markets || markets.length === 0) return;
 
@@ -121,11 +96,15 @@ export default function HomePage() {
   return (
     <>
       <MarketOverview favorites={favorites} onRemoveFavorite={toggleFavorite} />
-      <MarketTable
-        markets={markets}
-        favorites={favorites}
-        onToggleFavorite={toggleFavorite}
-      />
+      {error && <p>Failed to load markets</p>}
+      {markets && (
+        <MarketTable
+          markets={markets}
+          favorites={favorites}
+          onToggleFavorite={toggleFavorite}
+        />
+      )}
+      {isLoading && <Spinner />}
     </>
   );
 }
