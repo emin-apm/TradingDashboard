@@ -10,6 +10,13 @@ type MarketData = {
   sparkline: number[];
 };
 
+type BinanceTicker = {
+  symbol: string;
+  lastPrice: string;
+  priceChangePercent: string;
+  quoteVolume: string;
+};
+
 export default function HomePage() {
   const [markets, setMarkets] = useState<MarketData[]>([]);
   const [favorites, setFavorites] = useState<MarketData[]>([]);
@@ -22,14 +29,14 @@ export default function HomePage() {
         const data = await res.json();
 
         const top = data
-          .filter((d: any) => d.symbol.endsWith("USDT"))
+          .filter((d: BinanceTicker) => d.symbol.endsWith("USDT"))
           .sort(
-            (a: any, b: any) =>
+            (a: BinanceTicker, b: BinanceTicker) =>
               parseFloat(b.quoteVolume) - parseFloat(a.quoteVolume)
           )
           .slice(0, 100);
 
-        const formatted = top.map((d: any) => ({
+        const formatted = top.map((d: BinanceTicker) => ({
           symbol: d.symbol,
           price: parseFloat(d.lastPrice),
           change24h: parseFloat(d.priceChangePercent),
