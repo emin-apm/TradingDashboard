@@ -2,7 +2,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
 import { lazy, Suspense } from "react";
 import WalletPage from "./pages/WalletPage";
-import MarketOverview from "./components/MarketOverview/MarketOverview.tsx";
 
 const HomePage = lazy(() => import("./pages/HomePage"));
 const MarketPlacePage = lazy(() => import("./pages/WalletPage"));
@@ -16,7 +15,7 @@ function App() {
       children: [
         { index: true, element: <HomePage /> },
         { path: "wallet", element: <WalletPage /> },
-        { path: "marketoverview", element: <MarketOverview /> },
+        { path: "marketoverview", element: <HomePage /> },
       ],
     },
   ]);
