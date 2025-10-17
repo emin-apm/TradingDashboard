@@ -64,8 +64,9 @@ export default function MarketTable({
                       onClick={() => onToggleFavorite(m.symbol)}
                     >
                       <i
-                        className="fa-solid fa-star"
-                        style={{ color: isFav ? "gold" : "gray" }}
+                        className={`${styles.addToFav} fa-solid fa-star ${
+                          isFav ? styles.favorite : ""
+                        }`}
                       ></i>
                     </button>
                   </td>
