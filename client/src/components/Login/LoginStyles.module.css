@@ -1,0 +1,177 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.wrapper {
+  position: relative;
+  background-color: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 43rem;
+  max-height: 70vh;
+  min-height: 450px;
+  overflow: auto;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.close {
+  position: absolute;
+  top: 2%;
+  right: 2%;
+  width: 45px;
+  height: 45px;
+  font-size: 2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom-left-radius: 20px;
+  cursor: pointer;
+}
+
+.formBox {
+  width: 100%;
+  padding: 40px;
+}
+
+h2 {
+  font-size: 2em;
+  text-align: center;
+}
+
+.inputBox {
+  position: relative;
+  width: 100%;
+  height: 50px;
+  border-bottom: 2px solid #162938;
+  margin: 30px 0;
+}
+
+.inputBox label {
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  transform: translateY(-50%);
+  font-size: 1em;
+  color: var(--color-gray-light);
+  font-weight: 500;
+  pointer-events: none;
+  transition: ease-in-out 0.2s;
+}
+
+.inputBox input:focus ~ label,
+.inputBox input:not(:placeholder-shown) ~ label {
+  top: -5px;
+}
+
+.inputBox input {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 1em;
+  font-weight: 600;
+  color: var(--color-dark);
+  padding: 0 35px 0 5px;
+}
+.inputBox .icon {
+  position: absolute;
+  right: 8px;
+  font-size: 1.3rem;
+  color: var(--color-gray-light);
+  line-height: 57px;
+}
+
+.rememberCheck label input {
+  margin-right: 5px;
+}
+
+.rememberCheck a:hover {
+  text-decoration: underline;
+}
+
+.btn {
+  width: 100%;
+  height: 45px;
+  background-color: rgba(7, 104, 234, 0.5);
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: ease-in-out 0.2s;
+}
+
+.btn:hover {
+  transform: scale(1.02);
+}
+
+.btn i {
+  margin-right: 0.5em;
+}
+
+.loginRegister {
+  font-size: 0.9em;
+  color: var(--color-gray-light);
+  text-align: center;
+  font-weight: 400;
+  margin: 25px 0 10px;
+}
+
+.registerLink {
+  font-weight: 500;
+  margin-left: 4px;
+  color: var(--color-dark);
+}
+.registerLink:hover {
+  text-decoration: underline;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 15px 0;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background-color: var(--color-gray-light);
+}
+
+.dividerText {
+  padding: 0 10px;
+  color: var(--color-dark);
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .wrapper {
+    margin: 0 1em;
+  }
+}
+@media (max-width: 520px) {
+  .rememberCheck {
+    flex-direction: column;
+    gap: 1.3em;
+    margin: 0 0 20px 0;
+  }
+  .formBox {
+    padding: 23px;
+  }
+  .divider {
+    margin: 1px 0;
+  }
+}
