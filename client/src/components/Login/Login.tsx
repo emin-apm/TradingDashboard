@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styles from "./LoginStyles.module.css";
 
 type LoginProps = {
@@ -5,6 +6,12 @@ type LoginProps = {
 };
 
 export default function Login({ onClose }: LoginProps) {
+  const [isRegister, setIsRegister] = useState(false);
+
+  const toggleRegister = () => {
+    setIsRegister((old) => (old = !isRegister));
+  };
+
   return (
     <div
       className={styles.modalOverlay}
@@ -16,7 +23,7 @@ export default function Login({ onClose }: LoginProps) {
         </span>
 
         <div className={`${styles.formBox} ${styles.login}`}>
-          <h2>Login</h2>
+          <h2>{isRegister ? "Register" : "Login"}</h2>
 
           <form>
             {/* Email */}
@@ -38,16 +45,18 @@ export default function Login({ onClose }: LoginProps) {
             </div>
 
             {/* Confirm Password (for register example) */}
-            {/* <div className={styles.inputBox}>
-              <span className={styles.icon}>
-                <i className="fa-solid fa-lock"></i>
-              </span>
-              <input type="password" placeholder=" " />
-              <label>Confirm Password</label>
-            </div> */}
+            {isRegister && (
+              <div className={styles.inputBox}>
+                <span className={styles.icon}>
+                  <i className="fa-solid fa-lock"></i>
+                </span>
+                <input type="password" placeholder=" " />
+                <label>Confirm Password</label>
+              </div>
+            )}
 
             <button type="button" className={styles.btn}>
-              Login
+              {isRegister ? "Register" : "Login"}
             </button>
 
             <div className={styles.divider}>
@@ -55,16 +64,35 @@ export default function Login({ onClose }: LoginProps) {
             </div>
 
             <button type="button" className={styles.btn}>
-              <i className="fa-brands fa-google"></i> Login with Google
+              <i className="fa-brands fa-google"></i>
+              {isRegister ? "Register " : "Login "}
+              with Google
             </button>
 
             <div className={styles.loginRegister}>
-              <p>
-                Don’t have an account?
-                <button type="button" className={styles.registerLink}>
-                  Register
-                </button>
-              </p>
+              {isRegister ? (
+                <p>
+                  Already have an account?
+                  <button
+                    type="button"
+                    className={styles.registerLink}
+                    onClick={() => toggleRegister()}
+                  >
+                    Login
+                  </button>
+                </p>
+              ) : (
+                <p>
+                  Don’t have an account?
+                  <button
+                    type="button"
+                    className={styles.registerLink}
+                    onClick={() => toggleRegister()}
+                  >
+                    Register
+                  </button>
+                </p>
+              )}
             </div>
           </form>
         </div>
