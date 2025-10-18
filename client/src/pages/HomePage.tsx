@@ -7,6 +7,18 @@ import { fetchMarkets } from "../services/marketService";
 import type { MarketData } from "../services/marketService";
 import Spinner from "../components/Spinner/Spinner";
 
+type BinanceMiniTicker = {
+  e: string; // Event type
+  E: number; // Event time
+  s: string; // Symbol
+  c: string; // Close price
+  o: string; // Open price
+  h: string; // High price
+  l: string; // Low price
+  v: string; // Total traded base asset volume
+  q: string; // Total traded quote asset volume
+};
+
 export default function HomePage() {
   const queryClient = useQueryClient();
   const [favorites, setFavorites] = useState<MarketData[]>([]);
@@ -20,14 +32,15 @@ export default function HomePage() {
   } = useQuery<MarketData[]>({
     queryKey: ["markets"],
     queryFn: () => fetchMarkets(url),
-    refetchInterval: 60000, // optional auto refetch
+    refetchInterval: 60000,
   });
 
-  // Initialize BTC as favorite when markets load
+  // Initialize BTC as favorite once
   useEffect(() => {
+    if (markets.length === 0 || favorites.length > 0) return;
     const btc = markets.find((c) => c.symbol === "BTCUSDT");
     if (btc) setFavorites([btc]);
-  }, [markets]);
+  }, [markets, favorites]);
 
   // WebSocket for live updates
   useEffect(() => {
@@ -38,13 +51,14 @@ export default function HomePage() {
     );
 
     ws.onmessage = (event) => {
-      const data = JSON.parse(event.data);
+      const data: BinanceMiniTicker[] = JSON.parse(event.data);
 
+      // Update all markets in React Query cache
       queryClient.setQueryData<MarketData[]>(["markets"], (oldMarkets) => {
         if (!oldMarkets) return [];
 
         return oldMarkets.map((m) => {
-          const update = data.find((d: any) => d.s === m.symbol);
+          const update = data.find((d) => d.s === m.symbol);
           if (!update) return m;
 
           const newPrice = parseFloat(update.c);
@@ -65,11 +79,20 @@ export default function HomePage() {
         });
       });
 
-      // Update favorites
+      // Update favorites in real-time
       setFavorites((prevFavs) =>
         prevFavs.map((f) => {
-          const updated = markets.find((m) => m.symbol === f.symbol);
-          return updated ? updated : f;
+          const updated = data.find((d) => d.s === f.symbol);
+          if (!updated) return f;
+
+          const newPrice = parseFloat(updated.c);
+          const openPrice = parseFloat(updated.o);
+          return {
+            ...f,
+            price: newPrice,
+            change24h:
+              openPrice !== 0 ? ((newPrice - openPrice) / openPrice) * 100 : 0,
+          };
         })
       );
     };
@@ -84,27 +107,26 @@ export default function HomePage() {
     const coin = markets.find((m) => m.symbol === symbol);
     if (!coin) return;
 
-    setFavorites((prev) => {
-      if (prev.find((x) => x.symbol === symbol)) {
-        return prev.filter((x) => x.symbol !== symbol);
-      } else {
-        return [...prev, coin];
-      }
-    });
+    setFavorites((prev) =>
+      prev.find((x) => x.symbol === symbol)
+        ? prev.filter((x) => x.symbol !== symbol)
+        : [...prev, coin]
+    );
   };
 
   return (
     <>
       <MarketOverview favorites={favorites} onRemoveFavorite={toggleFavorite} />
       {error && <p>Failed to load markets</p>}
-      {markets && (
+      {isLoading ? (
+        <Spinner />
+      ) : (
         <MarketTable
           markets={markets}
           favorites={favorites}
           onToggleFavorite={toggleFavorite}
         />
       )}
-      {isLoading && <Spinner />}
     </>
   );
 }
