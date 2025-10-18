@@ -34,8 +34,24 @@ export default function Wallet() {
               <p>$55,000</p>
             </div>
             <div className={styles.tradeButtons}>
-              <button onClick={() => console.log("BTC")}>Buy</button>
-              <button onClick={() => console.log("BTC")}>Sell</button>
+              <button
+                className={styles.buyBtn}
+                onClick={() => console.log("BTC")}
+              >
+                Buy
+                <span>
+                  <i className="fa-solid fa-arrow-up"></i>
+                </span>
+              </button>
+              <button
+                className={styles.sellBtn}
+                onClick={() => console.log("BTC")}
+              >
+                Sell
+                <span>
+                  <i className="fa-solid fa-arrow-down"></i>
+                </span>
+              </button>
             </div>
           </li>
           <li className={styles.walletToken}>
@@ -51,8 +67,24 @@ export default function Wallet() {
               <p>$55,000</p>
             </div>
             <div className={styles.tradeButtons}>
-              <button onClick={() => console.log("BTC")}>Buy</button>
-              <button onClick={() => console.log("BTC")}>Sell</button>
+              {/* <button
+                className={styles.buyBtn}
+                onClick={() => console.log("BTC")}
+              >
+                Buy
+                <span>
+                  <i className="fa-solid fa-arrow-up"></i>
+                </span>
+              </button> */}
+              <button
+                className={styles.sellBtn}
+                onClick={() => console.log("BTC")}
+              >
+                Sell
+                <span>
+                  <i className="fa-solid fa-arrow-down"></i>
+                </span>
+              </button>
             </div>
           </li>
           <li className={styles.walletToken}>
@@ -68,42 +100,24 @@ export default function Wallet() {
               <p>$55,000</p>
             </div>
             <div className={styles.tradeButtons}>
-              <button onClick={() => console.log("BTC")}>Buy</button>
-              <button onClick={() => console.log("BTC")}>Sell</button>
-            </div>
-          </li>
-          <li className={styles.walletToken}>
-            <div>
-              <h4>Bitcoin</h4>
-              <div>
-                <p>$55,000</p>
-                <div className={`small`}></div>
-              </div>
-            </div>
-            <div className={styles.tokenRight}>
-              <h4>1 BTC</h4>
-              <p>$55,000</p>
-            </div>
-            <div className={styles.tradeButtons}>
-              <button onClick={() => console.log("BTC")}>Buy</button>
-              <button onClick={() => console.log("BTC")}>Sell</button>
-            </div>
-          </li>
-          <li className={styles.walletToken}>
-            <div>
-              <h4>Bitcoin</h4>
-              <div>
-                <p>$55,000</p>
-                <div className={`small`}></div>
-              </div>
-            </div>
-            <div className={styles.tokenRight}>
-              <h4>1 BTC</h4>
-              <p>$55,000</p>
-            </div>
-            <div className={styles.tradeButtons}>
-              <button onClick={() => console.log("BTC")}>Buy</button>
-              <button onClick={() => console.log("BTC")}>Sell</button>
+              <button
+                className={styles.buyBtn}
+                onClick={() => console.log("BTC")}
+              >
+                Buy
+                <span>
+                  <i className="fa-solid fa-arrow-up"></i>
+                </span>
+              </button>
+              {/* <button
+                className={styles.sellBtn}
+                onClick={() => console.log("BTC")}
+              >
+                Sell
+                <span>
+                  <i className="fa-solid fa-arrow-down"></i>
+                </span>
+              </button> */}
             </div>
           </li>
         </ul>
