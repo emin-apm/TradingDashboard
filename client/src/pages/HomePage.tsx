@@ -1,4 +1,3 @@
-// HomePage.tsx
 import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import MarketOverview from "../components/MarketOverview/MarketOverview";
@@ -8,15 +7,15 @@ import type { MarketData } from "../services/marketService";
 import Spinner from "../components/Spinner/Spinner";
 
 type BinanceMiniTicker = {
-  e: string; // Event type
-  E: number; // Event time
-  s: string; // Symbol
-  c: string; // Close price
-  o: string; // Open price
-  h: string; // High price
-  l: string; // Low price
-  v: string; // Total traded base asset volume
-  q: string; // Total traded quote asset volume
+  e: string;
+  E: number;
+  s: string;
+  c: string;
+  o: string;
+  h: string;
+  l: string;
+  v: string;
+  q: string;
 };
 
 export default function HomePage() {
@@ -24,7 +23,6 @@ export default function HomePage() {
   const [favorites, setFavorites] = useState<MarketData[]>([]);
   const url = "https://api.binance.com/api/v3/ticker/24hr";
 
-  // Fetch markets with React Query
   const {
     data: markets = [],
     isLoading,
@@ -32,17 +30,22 @@ export default function HomePage() {
   } = useQuery<MarketData[]>({
     queryKey: ["markets"],
     queryFn: () => fetchMarkets(url),
-    refetchInterval: 60000,
   });
 
-  // Initialize BTC as favorite once
   useEffect(() => {
-    if (markets.length === 0 || favorites.length > 0) return;
-    const btc = markets.find((c) => c.symbol === "BTCUSDT");
-    if (btc) setFavorites([btc]);
-  }, [markets, favorites]);
+    const savedFavs = localStorage.getItem("favorites");
+    if (savedFavs) setFavorites(JSON.parse(savedFavs));
+  }, []);
 
-  // WebSocket for live updates
+  useEffect(() => {
+    if (favorites.length > 0) {
+      localStorage.setItem("favorites", JSON.stringify(favorites));
+    } else {
+      localStorage.removeItem("favorites");
+    }
+  }, [favorites, markets]);
+
+  //WebSocket
   useEffect(() => {
     if (markets.length === 0) return;
 
@@ -53,22 +56,17 @@ export default function HomePage() {
     ws.onmessage = (event) => {
       const data: BinanceMiniTicker[] = JSON.parse(event.data);
 
-      // Update all markets in React Query cache
       queryClient.setQueryData<MarketData[]>(["markets"], (oldMarkets) => {
         if (!oldMarkets) return [];
-
         return oldMarkets.map((m) => {
           const update = data.find((d) => d.s === m.symbol);
           if (!update) return m;
-
           const newPrice = parseFloat(update.c);
           const openPrice = parseFloat(update.o);
           const change24h =
             openPrice !== 0 ? ((newPrice - openPrice) / openPrice) * 100 : 0;
-
           const newSparkline = [...m.sparkline, newPrice];
           if (newSparkline.length > 20) newSparkline.shift();
-
           return {
             ...m,
             price: newPrice,
@@ -79,12 +77,10 @@ export default function HomePage() {
         });
       });
 
-      // Update favorites in real-time
       setFavorites((prevFavs) =>
         prevFavs.map((f) => {
           const updated = data.find((d) => d.s === f.symbol);
           if (!updated) return f;
-
           const newPrice = parseFloat(updated.c);
           const openPrice = parseFloat(updated.o);
           return {
@@ -100,7 +96,6 @@ export default function HomePage() {
     return () => ws.close();
   }, [markets, queryClient]);
 
-  // Toggle favorite
   const toggleFavorite = (symbol: string) => {
     if (!markets || markets.length === 0) return;
 
@@ -116,7 +111,22 @@ export default function HomePage() {
 
   return (
     <>
-      <MarketOverview favorites={favorites} onRemoveFavorite={toggleFavorite} />
+      <MarketOverview
+        favorites={
+          favorites.length > 0
+            ? favorites
+            : [
+                {
+                  symbol: "Add Star",
+                  price: 0,
+                  change24h: 0,
+                  sparkline: [],
+                  volume: 0,
+                },
+              ]
+        }
+        onRemoveFavorite={toggleFavorite}
+      />
       {error && <p>Failed to load markets</p>}
       {isLoading ? (
         <Spinner />

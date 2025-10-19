@@ -1,28 +1,34 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
-import { LineChart, Line, ResponsiveContainer, Tooltip } from "recharts";
+import {
+  LineChart,
+  Line,
+  ResponsiveContainer,
+  Tooltip,
+  YAxis,
+  XAxis,
+} from "recharts";
 import styles from "./MarketDetailModal.module.css";
 
 // -------- Types --------
 
-// Binance Kline raw array
 type BinanceKline = [
-  number, // 0: open time
-  string, // 1: open
-  string, // 2: high
-  string, // 3: low
-  string, // 4: close
-  string, // 5: volume
-  number, // 6: close time
-  string, // 7: quote asset volume
-  number, // 8: trades
-  string, // 9: taker buy base asset volume
-  string, // 10: taker buy quote asset volume
-  string // 11: ignore
+  number,
+  string,
+  string,
+  string,
+  string,
+  string,
+  number,
+  string,
+  number,
+  string,
+  string,
+  string
 ];
 
-type Candle = [number, number, number, number, number]; // [time, open, high, low, close]
+type Candle = [number, number, number, number, number];
 type Order = { price: number; amount: number };
 type Trade = {
   time: string;
@@ -32,11 +38,9 @@ type Trade = {
 };
 
 interface MarketDetailModalProps {
-  symbol: string; // e.g. BTCUSDT
+  symbol: string;
   onClose: () => void;
 }
-
-// -------- Component --------
 
 export default function MarketDetailModal({
   symbol,
@@ -47,7 +51,6 @@ export default function MarketDetailModal({
   const [asks, setAsks] = useState<Order[]>([]);
   const [trades, setTrades] = useState<Trade[]>([]);
 
-  // ✅ Fetch initial candles using React Query + Axios
   const { data, isLoading, error } = useQuery<Candle[]>({
     queryKey: ["candles", symbol],
     queryFn: async () => {
@@ -62,7 +65,6 @@ export default function MarketDetailModal({
         }
       );
 
-      // Map raw Binance data to our Candle type
       return res.data.map((c) => [
         c[0], // time
         parseFloat(c[1]), // open
@@ -71,15 +73,12 @@ export default function MarketDetailModal({
         parseFloat(c[4]), // close
       ]);
     },
-    staleTime: 60_000, // optional cache duration
   });
 
-  // Initialize candles state when query completes
   useEffect(() => {
     if (data) setCandles(data);
   }, [data]);
 
-  // ✅ WebSocket live updates
   useEffect(() => {
     const ws = new WebSocket(
       `wss://stream.binance.com:9443/stream?streams=${symbol.toLowerCase()}@kline_1m/${symbol.toLowerCase()}@trade/${symbol.toLowerCase()}@depth5`
@@ -100,13 +99,13 @@ export default function MarketDetailModal({
         ];
         setCandles((prev) => {
           const copy = [...prev];
-          if (copy.length >= 30) copy.shift();
+          if (copy.length >= 10) copy.shift();
           copy.push(newCandle);
           return copy;
         });
       }
 
-      // Recent Trades
+      // Trade updates
       if (msg.stream.endsWith("trade")) {
         const trade: Trade = {
           time: new Date(msg.data.T).toLocaleTimeString(),
@@ -114,10 +113,10 @@ export default function MarketDetailModal({
           amount: parseFloat(msg.data.q),
           side: msg.data.m ? "sell" : "buy",
         };
-        setTrades((prev) => [trade, ...prev.slice(0, 15)]);
+        setTrades((prev) => [trade, ...prev.slice(0, 9)]);
       }
 
-      // Order Book Depth
+      // Order book updates
       if (msg.stream.endsWith("depth5")) {
         const { bids, asks } = msg.data;
         setBids(
@@ -138,10 +137,9 @@ export default function MarketDetailModal({
     return () => ws.close();
   }, [symbol]);
 
-  // More readable chart mapping
   const chartData = candles.map((candle) => ({
     time: new Date(candle[0]).toLocaleTimeString(),
-    close: candle[4],
+    close: parseFloat(candle[4].toFixed(6)),
   }));
 
   return (
@@ -150,7 +148,6 @@ export default function MarketDetailModal({
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
       <div className={styles.modalContainer}>
-        {/* Header */}
         <div className={styles.modalHeader}>
           <h2 className={styles.modalTitle}>{symbol.toUpperCase()}</h2>
           <button onClick={onClose} className={styles.closeButton}>
@@ -158,7 +155,6 @@ export default function MarketDetailModal({
           </button>
         </div>
 
-        {/* Loading / Error */}
         {isLoading && <p>Loading candles...</p>}
         {error && <p>Failed to load candles</p>}
 
@@ -166,8 +162,20 @@ export default function MarketDetailModal({
         <div className={styles.chartContainer}>
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={chartData}>
+              <XAxis dataKey="time" tick={{ fontSize: 10 }} />
+              <YAxis
+                domain={[
+                  (dataMin: number) => dataMin * 0.995,
+                  (dataMax: number) => dataMax * 1.005,
+                ]}
+                tick={{ fontSize: 10 }}
+                tickFormatter={(value) => `$${value.toFixed(2)}`}
+              />
               <Tooltip
-                contentStyle={{ backgroundColor: "#fff", borderRadius: "8px" }}
+                contentStyle={{
+                  backgroundColor: "#fff",
+                  borderRadius: "8px",
+                }}
                 labelStyle={{ color: "#333" }}
                 formatter={(value) => [`$${value}`, "Price"]}
               />
@@ -183,7 +191,6 @@ export default function MarketDetailModal({
           </ResponsiveContainer>
         </div>
 
-        {/* Buttons */}
         <div className={styles.btnContainer}>
           <button className={`${styles.btnOutline} ${styles.buy}`}>Buy</button>
           <button className={`${styles.btnOutline} ${styles.sell}`}>
@@ -191,9 +198,7 @@ export default function MarketDetailModal({
           </button>
         </div>
 
-        {/* Order Book & Trades */}
         <div className={styles.grid3}>
-          {/* Order Book */}
           <div className={styles.listContainer}>
             <h3 className={styles.listHeaderTitle}>Order Book</h3>
             <div className={styles.listHeader}>
@@ -222,7 +227,6 @@ export default function MarketDetailModal({
             </div>
           </div>
 
-          {/* Recent Trades */}
           <div className={`${styles.listContainer} ${styles.tradeContainer}`}>
             <h3 className={styles.listHeaderTitle}>Recent Trades</h3>
             <div className={styles.listHeader}>
