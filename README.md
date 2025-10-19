@@ -1,4 +1,5 @@
 🎯 Trade Dashboard
+
 Trade Dashboard is a React web app for tracking live market data, viewing trades, and executing buy/sell orders. Real-time updates via WebSockets make trading smooth and fast!
 
 🌍 Live Demo: Coming soon
