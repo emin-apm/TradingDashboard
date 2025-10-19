@@ -4,7 +4,6 @@ import { lazy, Suspense } from "react";
 import WalletPage from "./pages/WalletPage";
 
 const HomePage = lazy(() => import("./pages/HomePage"));
-const MarketPlacePage = lazy(() => import("./pages/WalletPage"));
 
 function App() {
   const router = createBrowserRouter([
