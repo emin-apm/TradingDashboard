@@ -40,6 +40,51 @@
   box-shadow: 0 2rem 3rem var(--color-primary-light);
 }
 
+.card:nth-child(4) {
+  background: linear-gradient(#ffcc70, #ff8c00);
+  box-shadow: 0 2rem 3rem rgba(255, 140, 0, 0.3);
+}
+
+.card:nth-child(5) {
+  background: linear-gradient(#4ad9e0, #007f91);
+  box-shadow: 0 2rem 3rem rgba(0, 127, 145, 0.3);
+}
+
+.card:nth-child(6) {
+  background: linear-gradient(#6fdc6f, #2e7d32);
+  box-shadow: 0 2rem 3rem rgba(46, 125, 50, 0.3);
+}
+
+.card:nth-child(6n + 1) {
+  background: linear-gradient(#ff796f, #bd261b);
+  box-shadow: 0 2rem 3rem var(--color-danger-light);
+}
+
+.card:nth-child(6n + 2) {
+  background: linear-gradient(#7f8191, #27282f);
+  box-shadow: 0 2rem 3rem rgba(0, 0, 0, 0.12);
+}
+
+.card:nth-child(6n + 3) {
+  background: linear-gradient(#6978fd, #4f15b4);
+  box-shadow: 0 2rem 3rem var(--color-primary-light);
+}
+
+.card:nth-child(6n + 4) {
+  background: linear-gradient(#ffcc70, #ff8c00);
+  box-shadow: 0 2rem 3rem rgba(255, 140, 0, 0.3);
+}
+
+.card:nth-child(6n + 5) {
+  background: linear-gradient(#4ad9e0, #007f91);
+  box-shadow: 0 2rem 3rem rgba(0, 127, 145, 0.3);
+}
+
+.card:nth-child(6n + 6) {
+  background: linear-gradient(#6fdc6f, #2e7d32);
+  box-shadow: 0 2rem 3rem rgba(46, 125, 50, 0.3);
+}
+
 .card:hover {
   box-shadow: none;
   transform: translateY(-4px);

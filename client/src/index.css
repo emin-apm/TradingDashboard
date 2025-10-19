@@ -186,3 +186,7 @@ p {
   background: var(--color-dark);
   box-shadow: 0 0.8rem 0.8rem rgba(0, 0, 0, 0.12);
 }
+
+.error {
+  color: var(--color-danger);
+}
