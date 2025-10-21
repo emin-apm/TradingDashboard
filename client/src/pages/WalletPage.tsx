@@ -1,3 +1,4 @@
+import { useEffect, useMemo } from "react";
 import Wallet from "../components/Wallet/Wallet";
 import { useAuthStore } from "../store/useAuthStore";
 import { useModalStore } from "../store/useLoginModal";
@@ -11,7 +12,14 @@ declare global {
 }
 
 export default function WalletPage() {
-  const { walletAddress, setWalletAddress, isLoggedIn } = useAuthStore();
+  const {
+    walletAddress,
+    setWalletAddress,
+    isLoggedIn,
+    myCoins,
+    history,
+    name,
+  } = useAuthStore();
   const { openLoginModal } = useModalStore();
 
   const connectWallet = async () => {
@@ -24,7 +32,7 @@ export default function WalletPage() {
       const accounts = await window.ethereum.request({
         method: "eth_requestAccounts",
       });
-      setWalletAddress(accounts[0]); // store address globally
+      setWalletAddress(accounts[0]);
     } catch (error) {
       console.error("MetaMask connection failed", error);
     }
@@ -34,14 +42,26 @@ export default function WalletPage() {
     setWalletAddress(null);
   };
 
+  const totalBalance = useMemo(() => {
+    if (!myCoins || myCoins.length === 0) return 0;
+    return myCoins.reduce((sum, coin) => sum + coin.amount, 0);
+  }, [myCoins]);
+
+  useEffect(() => {
+    if (walletAddress) {
+      console.log("Wallet connected:", walletAddress);
+    }
+  }, [walletAddress]);
+
   return (
     <>
       {isLoggedIn ? (
         <Wallet
           address={walletAddress}
-          balance={null} // backend will provide this later
+          balance={totalBalance}
           connectWallet={connectWallet}
           disconnectWallet={disconnectWallet}
+          tradeHistory={history}
         />
       ) : (
         <div className="container">
