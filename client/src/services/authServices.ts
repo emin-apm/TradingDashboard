@@ -7,18 +7,20 @@ export type RegisterData = {
   confirmPassword: string;
 };
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000";
 
 export const login = async (data: LoginData) => {
-  const res = await axios.post(`${API_BASE}/auth/login`, data, {
+  const res = await axios.post(`${API_BASE}/user/login`, data, {
     headers: { "Content-Type": "application/json" },
+    withCredentials: true,
   });
   return res.data;
 };
 
 export const register = async (data: RegisterData) => {
-  const res = await axios.post(`${API_BASE}/auth/register`, data, {
+  const res = await axios.post(`${API_BASE}/user/register`, data, {
     headers: { "Content-Type": "application/json" },
+    withCredentials: true,
   });
   return res.data;
 };
