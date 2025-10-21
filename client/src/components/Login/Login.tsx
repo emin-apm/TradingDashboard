@@ -2,16 +2,30 @@ import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useAuthStore } from "../../store/useAuthStore";
 import { login, register } from "../../services/authServices";
-import { validateForm } from "../utils/validations";
-import type { ValidationErrors } from "../utils/validations";
+import { validateForm } from "../../utils/validations";
+import type { ValidationErrors } from "../../utils/validations";
 import styles from "./LoginStyles.module.css";
 
 type LoginProps = { onClose: () => void };
+
+type Coin = { symbol: string; amount: number };
+type Trade = {
+  symbol: string;
+  side: "buy" | "sell";
+  price: number;
+  amount: number;
+  date: Date;
+};
+
 type AuthResponse = {
-  token: string;
-  email: string;
-  balance: number;
-  history: Array<any>;
+  userData: {
+    email: string;
+    id: string;
+    myCoins: Coin[];
+    tradeHistory: Trade[];
+  };
+  accessToken: string;
+  refreshToken: string;
 };
 
 export default function Login({ onClose }: LoginProps) {
@@ -21,17 +35,18 @@ export default function Login({ onClose }: LoginProps) {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState<ValidationErrors>({});
 
-  const { setIsLoggedIn, setToken, setName, setBalance, setHistory } =
+  // New auth store
+  const { setIsLoggedIn, setToken, setName, setMyCoins, setHistory, setId } =
     useAuthStore();
 
   const loginMutation = useMutation({
     mutationFn: (data: { email: string; password: string }) => login(data),
     onSuccess: (data: AuthResponse) => {
       setIsLoggedIn(true);
-      setToken(data.token);
-      setName(data.email);
-      setBalance(data.balance);
-      setHistory(data.history);
+      setToken(data.accessToken ?? "");
+      setName(data.userData.email ?? "");
+      setMyCoins(data.userData.myCoins ?? []);
+      setHistory(data.userData.tradeHistory ?? []);
       onClose();
     },
     onError: (err: any) => alert(err.response?.data?.message || "Login failed"),
@@ -45,10 +60,11 @@ export default function Login({ onClose }: LoginProps) {
     }) => register(data),
     onSuccess: (data: AuthResponse) => {
       setIsLoggedIn(true);
-      setToken(data.token);
-      setName(data.email);
-      setBalance(data.balance);
-      setHistory(data.history);
+      setToken(data.accessToken);
+      setName(data.userData.email);
+      setId(data.userData.id);
+      setMyCoins(data.userData.myCoins);
+      setHistory(data.userData.tradeHistory);
       onClose();
     },
     onError: (err: any) =>
@@ -65,11 +81,9 @@ export default function Login({ onClose }: LoginProps) {
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length === 0) {
-      if (isRegister) {
+      if (isRegister)
         registerMutation.mutate({ email, password, confirmPassword });
-      } else {
-        loginMutation.mutate({ email, password });
-      }
+      else loginMutation.mutate({ email, password });
     }
   };
 
