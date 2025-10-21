@@ -12,14 +12,8 @@ declare global {
 }
 
 export default function WalletPage() {
-  const {
-    walletAddress,
-    setWalletAddress,
-    isLoggedIn,
-    myCoins,
-    history,
-    name,
-  } = useAuthStore();
+  const { walletAddress, setWalletAddress, isLoggedIn, myCoins, history } =
+    useAuthStore();
   const { openLoginModal } = useModalStore();
 
   const connectWallet = async () => {
