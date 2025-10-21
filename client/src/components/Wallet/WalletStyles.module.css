@@ -52,7 +52,9 @@
   font-weight: 600;
   font-size: 0.9rem;
 }
-
+.date {
+  font-size: 10px !important;
+}
 .walletTokens {
   margin-top: 1rem;
   display: grid;
@@ -66,6 +68,11 @@
   padding: 1.5rem;
   display: flex;
   justify-content: space-between;
+}
+
+.walletToken h4 {
+  color: #111; /* dark gray / black for all symbols */
+  font-weight: 600;
 }
 
 .walletToken:hover {
