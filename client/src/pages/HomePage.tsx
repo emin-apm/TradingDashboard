@@ -43,9 +43,8 @@ export default function HomePage() {
     } else {
       localStorage.removeItem("favorites");
     }
-  }, [favorites, markets]);
+  }, [favorites]);
 
-  //WebSocket
   useEffect(() => {
     if (markets.length === 0) return;
 
@@ -79,10 +78,10 @@ export default function HomePage() {
 
       setFavorites((prevFavs) =>
         prevFavs.map((f) => {
-          const updated = data.find((d) => d.s === f.symbol);
-          if (!updated) return f;
-          const newPrice = parseFloat(updated.c);
-          const openPrice = parseFloat(updated.o);
+          const update = data.find((d) => d.s === f.symbol);
+          if (!update) return f;
+          const newPrice = parseFloat(update.c);
+          const openPrice = parseFloat(update.o);
           return {
             ...f,
             price: newPrice,
