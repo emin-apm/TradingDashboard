@@ -11,8 +11,6 @@ import {
 } from "recharts";
 import styles from "./MarketDetailModal.module.css";
 
-// -------- Types --------
-
 type BinanceKline = [
   number,
   string,
