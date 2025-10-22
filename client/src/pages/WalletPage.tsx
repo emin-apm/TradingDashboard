@@ -3,6 +3,13 @@ import Wallet from "../components/Wallet/Wallet";
 import { useAuthStore } from "../store/useAuthStore";
 import { useModalStore } from "../store/useLoginModal";
 
+const prices: Record<string, number> = {
+  BTC: 30000,
+  ETH: 2000,
+  USDCUSDT: 1,
+  USDEUSDT: 1,
+};
+
 declare global {
   interface Window {
     ethereum?: {
@@ -36,17 +43,27 @@ export default function WalletPage() {
     setWalletAddress(null);
   };
 
-  const totalBalance = useMemo(() => {
-    if (!myCoins || myCoins.length === 0) return 0;
-    return myCoins.reduce((sum, coin) => sum + coin.amount, 0);
-  }, [myCoins]);
-
   useEffect(() => {
     if (walletAddress) {
       console.log("Wallet connected:", walletAddress);
     }
   }, [walletAddress]);
 
+  const totalBalance = useMemo(() => {
+    if (!myCoins || myCoins.length === 0) return 0;
+    return myCoins.reduce((sum, coin) => {
+      const price = prices[coin.symbol] ?? 0;
+      return sum + coin.amount * price;
+    }, 0);
+  }, [myCoins]);
+
+  const sortedHistory = useMemo(() => {
+    if (!history) return [];
+    return [...history].sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
+  }, [history]);
+  console.log(myCoins);
   return (
     <>
       {isLoggedIn ? (
@@ -55,7 +72,7 @@ export default function WalletPage() {
           balance={totalBalance}
           connectWallet={connectWallet}
           disconnectWallet={disconnectWallet}
-          tradeHistory={history}
+          tradeHistory={sortedHistory}
         />
       ) : (
         <div className="container">
