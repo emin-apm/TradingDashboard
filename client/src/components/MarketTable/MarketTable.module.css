@@ -194,18 +194,78 @@
 }
 
 @media (max-width: 768px) {
+  .tabNav {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 0.5rem;
+    scrollbar-width: none;
+  }
+
+  .tabNav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tabBtn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    flex: 0 0 auto;
+  }
+
+  .market {
+    padding: 1rem;
+    width: 95vw;
+  }
+}
+
+@media (max-width: 768px) {
+  .marketTable {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    border-radius: 12px;
+  }
+
+  .marketTable table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
   .tableHeader,
   .tableData {
     font-size: 0.85rem;
     padding: 0.5rem 0.7rem;
+    white-space: nowrap;
+  }
+
+  /* Optional: hide scrollbars visually */
+  .marketTable::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .marketTable::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+  }
+
+  .marketTable::-webkit-scrollbar-thumb:hover {
+    background: #999;
+  }
+}
+
+@media (max-width: 480px) {
+  .tabNav {
+    flex-direction: column;
+    overflow-x: visible;
+    white-space: normal;
+    gap: 0.4rem;
   }
 
   .tabBtn {
-    padding: 0.35rem 0.6rem;
-    font-size: 0.85rem;
-  }
-
-  .market {
-    padding: 1rem 1rem;
+    width: 100%;
+    text-align: center;
+    padding: 0.6rem;
+    font-size: 0.9rem;
   }
 }

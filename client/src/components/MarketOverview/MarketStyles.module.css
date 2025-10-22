@@ -16,7 +16,7 @@
   background: linear-gradient(#ff796f, #bd261b);
   padding: var(--card-padding);
   border-radius: var(--radius-3);
-  height: 15rem;
+  height: 12rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -125,4 +125,16 @@
 
 .footerRight h5 {
   font-size: 0.7rem;
+}
+
+@media (max-width: 768px) {
+  .mainCards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .mainCards {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }

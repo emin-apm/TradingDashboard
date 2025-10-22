@@ -52,9 +52,11 @@
   font-weight: 600;
   font-size: 0.9rem;
 }
+
 .date {
   font-size: 10px !important;
 }
+
 .walletTokens {
   margin-top: 1rem;
   display: grid;
@@ -120,4 +122,10 @@
 .sellBtn:hover {
   background-color: #dc2626;
   box-shadow: 0 4px 8px rgba(239, 68, 68, 0.4);
+}
+
+@media (max-width: 580px) {
+  .walletTokens {
+    grid-template-columns: 1fr;
+  }
 }

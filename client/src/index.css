@@ -190,3 +190,9 @@ p {
 .error {
   color: var(--color-danger);
 }
+
+@media (max-width: 768px) {
+  .container {
+    width: 100%;
+  }
+}
