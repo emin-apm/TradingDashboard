@@ -43,10 +43,11 @@ export default function Login({ onClose }: LoginProps) {
     mutationFn: (data: { email: string; password: string }) => login(data),
     onSuccess: (data: AuthResponse) => {
       setIsLoggedIn(true);
-      setToken(data.accessToken ?? "");
-      setName(data.userData.email ?? "");
-      setMyCoins(data.userData.myCoins ?? []);
-      setHistory(data.userData.tradeHistory ?? []);
+      setId(data.userData.id);
+      setToken(data.accessToken);
+      setName(data.userData.email);
+      setMyCoins(data.userData.myCoins);
+      setHistory(data.userData.tradeHistory);
       onClose();
     },
     onError: (err: any) => alert(err.response?.data?.message || "Login failed"),
