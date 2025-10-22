@@ -23,9 +23,9 @@ export default function Navbar() {
           </div>
 
           <div className={styles.navProfileWrapper}>
-            <button className={styles.navThemeBtn}>
+            {/* <button className={styles.navThemeBtn}>
               <i className="fa-solid fa-moon"></i>
-            </button>
+            </button> */}
 
             {isLoggedIn ? (
               <Link to="/wallet" className={styles.navProfile}>
