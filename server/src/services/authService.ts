@@ -45,26 +45,8 @@ export async function register({
   const user: IUser = await User.create({
     email,
     password,
-    myCoins: [
-      { symbol: "BTC", amount: 5 },
-      { symbol: "ETH", amount: 5 },
-    ],
-    tradeHistory: [
-      {
-        symbol: "BTC",
-        side: "buy",
-        price: 30000,
-        amount: 1,
-        date: new Date(),
-      },
-      {
-        symbol: "ETH",
-        side: "sell",
-        price: 2000,
-        amount: 2,
-        date: new Date(),
-      },
-    ],
+    myCoins: [],
+    tradeHistory: [],
   });
 
   const refreshToken = jwt.sign({ id: user._id }, REFRESH_SECRET, {
