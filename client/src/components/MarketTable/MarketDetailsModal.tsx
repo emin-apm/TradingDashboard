@@ -11,6 +11,8 @@ import {
 } from "recharts";
 import styles from "./MarketDetailModal.module.css";
 
+import { useTradeHandler } from "../../hook/useTradeHandler";
+
 type BinanceKline = [
   number,
   string,
@@ -48,6 +50,8 @@ export default function MarketDetailModal({
   const [bids, setBids] = useState<Order[]>([]);
   const [asks, setAsks] = useState<Order[]>([]);
   const [trades, setTrades] = useState<Trade[]>([]);
+
+  const { trade, isTrading } = useTradeHandler();
 
   const { data, isLoading, error } = useQuery<Candle[]>({
     queryKey: ["candles", symbol],
@@ -190,9 +194,34 @@ export default function MarketDetailModal({
         </div>
 
         <div className={styles.btnContainer}>
-          <button className={`${styles.btnOutline} ${styles.buy}`}>Buy</button>
-          <button className={`${styles.btnOutline} ${styles.sell}`}>
-            Sell
+          <button
+            className={`${styles.btnOutline} ${styles.buy}`}
+            onClick={() =>
+              trade({
+                side: "buy",
+                symbol,
+                price: candles[candles.length - 1]?.[4] ?? 0,
+                amount: 1,
+              })
+            }
+            disabled={isTrading}
+          >
+            {isTrading ? "Processing..." : "Buy"}
+          </button>
+
+          <button
+            className={`${styles.btnOutline} ${styles.sell}`}
+            onClick={() =>
+              trade({
+                side: "sell",
+                symbol,
+                price: candles[candles.length - 1]?.[4] ?? 0,
+                amount: 1,
+              })
+            }
+            disabled={isTrading}
+          >
+            {isTrading ? "Processing..." : "Sell"}
           </button>
         </div>
 
