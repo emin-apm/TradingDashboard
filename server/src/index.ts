@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 
 import connectDB from "./config/connectDB";
 import router from "./routes/router";
+import { errorHandler } from "./middleware/errorHandler";
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.use(
 
 app.use("/", router);
 app.get("/", (_req, res) => res.send("Trading Cashboard Backend running1!"));
+app.use(errorHandler);
 
 const MONGO_URI = process.env.MONGO_URI;
 const PORT = process.env.PORT;
