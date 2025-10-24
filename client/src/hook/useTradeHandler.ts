@@ -24,8 +24,8 @@ export function useTradeHandler() {
       const { data } = await axios.post(`${API_BASE_URL}/order/${side}`, {
         userId: id,
         symbol,
-        price,
-        amount,
+        price: Number(price),
+        amount: Number(amount),
       });
 
       return data.user;
