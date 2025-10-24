@@ -12,6 +12,7 @@ import {
 import styles from "./MarketDetailModal.module.css";
 
 import { useTradeHandler } from "../../hook/useTradeHandler";
+import { useAuthStore } from "../../store/useAuthStore";
 
 type BinanceKline = [
   number,
@@ -52,6 +53,7 @@ export default function MarketDetailModal({
   const [trades, setTrades] = useState<Trade[]>([]);
 
   const { trade, isTrading } = useTradeHandler();
+  const { isLoggedIn } = useAuthStore();
 
   const { data, isLoading, error } = useQuery<Candle[]>({
     queryKey: ["candles", symbol],
@@ -192,38 +194,39 @@ export default function MarketDetailModal({
             </LineChart>
           </ResponsiveContainer>
         </div>
+        {isLoggedIn && (
+          <div className={styles.btnContainer}>
+            <button
+              className={`${styles.btnOutline} ${styles.buy}`}
+              onClick={() =>
+                trade({
+                  side: "buy",
+                  symbol,
+                  price: candles[candles.length - 1]?.[4] ?? 0,
+                  amount: 1,
+                })
+              }
+              disabled={isTrading}
+            >
+              {isTrading ? "Processing..." : "Buy"}
+            </button>
 
-        <div className={styles.btnContainer}>
-          <button
-            className={`${styles.btnOutline} ${styles.buy}`}
-            onClick={() =>
-              trade({
-                side: "buy",
-                symbol,
-                price: candles[candles.length - 1]?.[4] ?? 0,
-                amount: 1,
-              })
-            }
-            disabled={isTrading}
-          >
-            {isTrading ? "Processing..." : "Buy"}
-          </button>
-
-          <button
-            className={`${styles.btnOutline} ${styles.sell}`}
-            onClick={() =>
-              trade({
-                side: "sell",
-                symbol,
-                price: candles[candles.length - 1]?.[4] ?? 0,
-                amount: 1,
-              })
-            }
-            disabled={isTrading}
-          >
-            {isTrading ? "Processing..." : "Sell"}
-          </button>
-        </div>
+            <button
+              className={`${styles.btnOutline} ${styles.sell}`}
+              onClick={() =>
+                trade({
+                  side: "sell",
+                  symbol,
+                  price: candles[candles.length - 1]?.[4] ?? 0,
+                  amount: 1,
+                })
+              }
+              disabled={isTrading}
+            >
+              {isTrading ? "Processing..." : "Sell"}
+            </button>
+          </div>
+        )}
 
         <div className={styles.grid3}>
           <div className={styles.listContainer}>
