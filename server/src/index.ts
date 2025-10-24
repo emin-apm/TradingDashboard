@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://trading-web331.web.app/"],
+    origin: ["http://localhost:5173", "https://trading-web331.web.app"],
     credentials: true,
   })
 );
