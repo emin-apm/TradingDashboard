@@ -7,9 +7,9 @@ type CustomError = Error & {
 
 export function errorHandler(
   err: CustomError,
-  req: Request,
+  _req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ) {
   console.error("Global Error:", err);
 
