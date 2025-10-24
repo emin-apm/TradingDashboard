@@ -3,13 +3,6 @@ import Wallet from "../components/Wallet/Wallet";
 import { useAuthStore } from "../store/useAuthStore";
 import { useModalStore } from "../store/useLoginModal";
 
-const prices: Record<string, number> = {
-  BTC: 30000,
-  ETH: 2000,
-  USDCUSDT: 1,
-  USDEUSDT: 1,
-};
-
 declare global {
   interface Window {
     ethereum?: {
@@ -51,9 +44,9 @@ export default function WalletPage() {
 
   const totalBalance = useMemo(() => {
     if (!myCoins || myCoins.length === 0) return 0;
+
     return myCoins.reduce((sum, coin) => {
-      const price = prices[coin.symbol] ?? 0;
-      return sum + coin.amount * price;
+      return sum + Number(coin.amount) * Number(coin.buyPrice);
     }, 0);
   }, [myCoins]);
 

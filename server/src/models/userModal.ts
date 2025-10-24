@@ -6,6 +6,7 @@ const SALT_HASH = 10;
 type Coin = {
   symbol: string;
   amount: number;
+  buyPrice: number;
 };
 
 type Trade = {
@@ -32,6 +33,7 @@ const UserSchema = new Schema<IUser>({
     {
       symbol: { type: String, required: true },
       amount: { type: Number, default: 0 },
+      buyPrice: { type: Number, require: true },
     },
   ],
   tradeHistory: [

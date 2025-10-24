@@ -9,14 +9,16 @@ type TradeData = {
 
 export async function buy({ userId, symbol, price, amount = 1 }: TradeData) {
   const user = await User.findById(userId);
-  if (!user) {
-    throw new Error("User not found");
-  }
+  if (!user) throw new Error("User not found");
+
   const existingCoin = user.myCoins.find((coin) => coin.symbol === symbol);
   if (existingCoin) {
+    existingCoin.buyPrice =
+      (existingCoin.buyPrice * existingCoin.amount + price * amount) /
+      (existingCoin.amount + amount);
     existingCoin.amount += amount;
   } else {
-    user.myCoins.push({ symbol, amount });
+    user.myCoins.push({ symbol, amount, buyPrice: price });
   }
 
   user.tradeHistory.push({
@@ -29,10 +31,7 @@ export async function buy({ userId, symbol, price, amount = 1 }: TradeData) {
 
   await user.save();
 
-  return {
-    message: "Trade successful",
-    user,
-  };
+  return { message: "Trade successful", user };
 }
 
 export async function sell({ userId, symbol, price, amount = 1 }: TradeData) {

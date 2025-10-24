@@ -4,6 +4,7 @@ import { persist } from "zustand/middleware";
 type Coin = {
   symbol: string;
   amount: number;
+  buyPrice: number;
 };
 
 type AuthState = {
