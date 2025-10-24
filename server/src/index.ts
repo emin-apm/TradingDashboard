@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import connectDB from "./config/connectDB";
 import router from "./routes/router";
 import { errorHandler } from "./middleware/errorHandler";
+import rateLimiter from "./middleware/limiter";
 
 dotenv.config();
 
@@ -22,6 +23,8 @@ app.use(
     credentials: true,
   })
 );
+
+app.use(rateLimiter);
 
 app.use("/", router);
 app.get("/", (_req, res) => res.send("Trading Cashboard Backend running1!"));
