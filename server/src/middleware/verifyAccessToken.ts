@@ -14,7 +14,7 @@ export const verifyAccessToken = (
   req: AuthenticatedRequest,
   res: Response,
   next: NextFunction
-) => {
+): Response | void => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
