@@ -8,7 +8,7 @@ import styles from "./LoginStyles.module.css";
 
 type LoginProps = { onClose: () => void };
 
-type Coin = { symbol: string; amount: number };
+type Coin = { symbol: string; amount: number; buyPrice: number };
 type Trade = {
   symbol: string;
   side: "buy" | "sell";

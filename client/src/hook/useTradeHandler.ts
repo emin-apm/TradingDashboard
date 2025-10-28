@@ -12,7 +12,7 @@ type TradePayload = {
 };
 
 export function useTradeHandler() {
-  const { id, isLoggedIn, setMyCoins, setHistory } = useAuthStore();
+  const { token, id, isLoggedIn, setMyCoins, setHistory } = useAuthStore();
 
   const tradeMutation = useMutation({
     mutationFn: async ({ side, symbol, price, amount }: TradePayload) => {
@@ -21,12 +21,19 @@ export function useTradeHandler() {
         throw new Error("You must be logged in to trade.");
       }
 
-      const { data } = await axios.post(`${API_BASE_URL}/order/${side}`, {
-        userId: id,
-        symbol,
-        price: Number(price),
-        amount: Number(amount),
-      });
+      const { data } = await axios.post(
+        `${API_BASE_URL}/order/${side}`,
+        {
+          symbol,
+          price: Number(price),
+          amount: Number(amount),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       return data.user;
     },

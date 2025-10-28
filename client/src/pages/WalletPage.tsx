@@ -46,7 +46,9 @@ export default function WalletPage() {
     if (!myCoins || myCoins.length === 0) return 0;
 
     return myCoins.reduce((sum, coin) => {
-      return sum + Number(coin.amount) * Number(coin.buyPrice);
+      const amount = Number(coin.amount) || 0;
+      const buyPrice = Number(coin.buyPrice) || 0;
+      return sum + amount * buyPrice;
     }, 0);
   }, [myCoins]);
 
