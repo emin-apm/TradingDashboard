@@ -15,7 +15,7 @@ Trade Dashboard is a React web app for tracking live market data, viewing trades
 - State management (Zustand)
 
 🛠 Tech Stack:
-React, React Query, Axios, Zustand, Ethers.js (optional), WebSocket
+React, React Query, Axios, Zustand, WebSocket
 
 📂 Project Structure:
 - components/ → UI components
