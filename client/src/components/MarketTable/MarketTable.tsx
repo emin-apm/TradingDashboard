@@ -124,7 +124,7 @@ export default function MarketTable({
         </table>
 
         {visibleCount < markets.length && (
-          <div style={{ textAlign: "center", marginTop: "1rem" }}>
+          <div className={styles.visibleBtnContainer}>
             <button onClick={handleLoadMore} className={styles.btnOutline}>
               Load More
             </button>
