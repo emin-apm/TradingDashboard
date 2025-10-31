@@ -20,7 +20,7 @@ type Trade = {
 type AuthResponse = {
   userData: {
     email: string;
-    id: string;
+    _id: string;
     myCoins: Coin[];
     tradeHistory: Trade[];
   };
@@ -43,7 +43,7 @@ export default function Login({ onClose }: LoginProps) {
     mutationFn: (data: { email: string; password: string }) => login(data),
     onSuccess: (data: AuthResponse) => {
       setIsLoggedIn(true);
-      setId(data.userData.id);
+      setId(data.userData._id);
       setToken(data.accessToken);
       setName(data.userData.email);
       setMyCoins(data.userData.myCoins);
@@ -63,7 +63,7 @@ export default function Login({ onClose }: LoginProps) {
       setIsLoggedIn(true);
       setToken(data.accessToken);
       setName(data.userData.email);
-      setId(data.userData.id);
+      setId(data.userData._id);
       setMyCoins(data.userData.myCoins);
       setHistory(data.userData.tradeHistory);
       onClose();

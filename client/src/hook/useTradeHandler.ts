@@ -25,6 +25,7 @@ export function useTradeHandler() {
         `${API_BASE_URL}/order/${side}`,
         {
           symbol,
+          userId: id,
           price: Number(price),
           amount: Number(amount),
         },
@@ -34,17 +35,18 @@ export function useTradeHandler() {
           },
         }
       );
-
       return data.user;
     },
 
     onSuccess: (user) => {
       setMyCoins(user.myCoins);
       setHistory(user.tradeHistory);
+      console.log("Token sent:", token);
       console.log("Trade successful!");
     },
 
     onError: (error: any) => {
+      console.log("Token sent:", token);
       const message =
         error.response?.data?.message || error.message || "Trade failed.";
       console.log(message);

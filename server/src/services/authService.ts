@@ -5,6 +5,9 @@ const JWT_SECRET = process.env.JWT_SECRET || "secret";
 const JWT_EXPIRES_IN = "1h";
 const REFRESH_SECRET = process.env.REFRESH_SECRET || "refreshsecret";
 
+console.log("JWT_SECRET:", JWT_SECRET);
+console.log("REFRESH_SECRET:", REFRESH_SECRET);
+
 type AuthInput = {
   email: string;
   password: string;
@@ -26,7 +29,7 @@ type Trade = {
 type AuthResult = {
   userData: {
     email: string;
-    id: string;
+    _id: string;
     myCoins: Coin[];
     tradeHistory: Trade[];
   };
@@ -49,17 +52,17 @@ export async function register({
     tradeHistory: [],
   });
 
-  const refreshToken = jwt.sign({ id: user._id }, REFRESH_SECRET, {
+  const refreshToken = jwt.sign({ _id: user._id }, REFRESH_SECRET, {
     expiresIn: "7d",
   });
-  const accessToken = jwt.sign({ id: user._id }, JWT_SECRET, {
+  const accessToken = jwt.sign({ _id: user._id }, JWT_SECRET, {
     expiresIn: JWT_EXPIRES_IN,
   });
 
   return {
     userData: {
       email: user.email,
-      id: user._id.toString(),
+      _id: user._id.toString(),
       myCoins: user.myCoins,
       tradeHistory: user.tradeHistory,
     },
@@ -73,22 +76,22 @@ export async function login({
   password,
 }: AuthInput): Promise<AuthResult> {
   email = email.toLowerCase();
-
+  console.log(REFRESH_SECRET, JWT_SECRET, JWT_EXPIRES_IN);
   const user: IUser | null = await User.findOne({ email });
   if (!user || !(await user.comparePassword!(password)))
     throw new Error("Invalid email or password.");
 
-  const refreshToken = jwt.sign({ id: user._id }, REFRESH_SECRET, {
+  const refreshToken = jwt.sign({ _id: user._id }, REFRESH_SECRET, {
     expiresIn: "7d",
   });
-  const accessToken = jwt.sign({ id: user._id }, JWT_SECRET, {
+  const accessToken = jwt.sign({ _id: user._id }, JWT_SECRET, {
     expiresIn: JWT_EXPIRES_IN,
   });
 
   return {
     userData: {
       email: user.email,
-      id: user._id.toString(),
+      _id: user._id.toString(),
       myCoins: user.myCoins,
       tradeHistory: user.tradeHistory,
     },
@@ -100,20 +103,20 @@ export async function login({
 export async function refreshToken(token: string): Promise<AuthResult> {
   try {
     const payload: any = jwt.verify(token, REFRESH_SECRET);
-    const user: IUser | null = await User.findById(payload.id);
+    const user: IUser | null = await User.findById(payload._id);
     if (!user) throw new Error("User not found");
 
-    const newRefreshToken = jwt.sign({ id: user._id }, REFRESH_SECRET, {
+    const newRefreshToken = jwt.sign({ _id: user._id }, REFRESH_SECRET, {
       expiresIn: "7d",
     });
-    const newAccessToken = jwt.sign({ id: user._id }, JWT_SECRET, {
+    const newAccessToken = jwt.sign({ _id: user._id }, JWT_SECRET, {
       expiresIn: JWT_EXPIRES_IN,
     });
 
     return {
       userData: {
         email: user.email,
-        id: user._id.toString(),
+        _id: user._id.toString(),
         myCoins: user.myCoins,
         tradeHistory: user.tradeHistory,
       },

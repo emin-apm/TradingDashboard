@@ -3,7 +3,6 @@ import jwt, { JwtPayload as DefaultJwtPayload } from "jsonwebtoken";
 
 interface JwtPayload extends DefaultJwtPayload {
   _id: string;
-  email: string;
 }
 
 export interface AuthenticatedRequest extends Request {
@@ -36,14 +35,15 @@ export const verifyAccessToken = (
   try {
     const decoded = jwt.verify(token, secret) as JwtPayload;
 
-    if (!decoded._id || !decoded.email) {
+    if (!decoded._id) {
       return res.status(403).json({ message: "Invalid token payload" });
     }
 
     req.user = decoded;
-
     next();
-  } catch {
+  } catch (err: any) {
+    console.error("JWT verification error:", err.message);
+    console.error("Full error object:", err);
     return res.status(403).json({ message: "Invalid or expired token" });
   }
 };

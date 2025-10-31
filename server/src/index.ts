@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+dotenv.config();
 
 import express from "express";
 import cors from "cors";
@@ -9,8 +10,6 @@ import router from "./routes/router";
 import { errorHandler } from "./middleware/errorHandler";
 import rateLimiter from "./middleware/limiter";
 
-dotenv.config();
-
 const app = express();
 
 // Middleware
@@ -19,7 +18,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(
   cors({
-    origin: ["https://trading-web331.web.app"],
+    origin: ["https://trading-web331.web.app", "http://localhost:5173"],
     credentials: true,
   })
 );
